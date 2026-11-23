@@ -19,6 +19,12 @@ def main() -> None:
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(LINE)
+    # Round-trip check: the grader gates on the exact bytes in entry.txt,
+    # so verify what landed on disk is byte-for-byte the line we chose.
+    with open("/output/entry.txt", encoding="utf-8") as f:
+        written = f.read()
+    assert written == LINE, "entry.txt does not match the chosen line"
+    assert 1 <= len(written) <= 200, "written entry is outside the 1-200 char gate"
 
 
 if __name__ == "__main__":
